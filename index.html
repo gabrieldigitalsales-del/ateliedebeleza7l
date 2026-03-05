@@ -1,112 +1,661 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!doctype html>
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ateliê da Beleza</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ateliê da Beleza ✨</title>
+  <meta name="description" content="Wi-Fi, Avaliação no Google, Instagram e WhatsApp — Ateliê da Beleza" />
 
-<style>
+  <style>
+    :root{
+      --bg1:#ffe6f0;
+      --bg2:#ffffff;
+      --card: rgba(255,255,255,.78);
+      --border: rgba(0,0,0,.08);
+      --text:#111;
+      --muted:#555;
+      --shadow: 0 18px 50px rgba(0,0,0,.12);
+      --radius: 22px;
+    }
 
-body{
-font-family: Arial, Helvetica, sans-serif;
-background: linear-gradient(135deg,#f7d7e7,#f3f3f3);
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-margin:0;
-}
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% 10%, rgba(255,100,180,.22), transparent 55%),
+        radial-gradient(900px 500px at 80% 20%, rgba(120,160,255,.22), transparent 55%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:22px;
+    }
 
-.container{
-background:white;
-padding:30px;
-border-radius:20px;
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
-text-align:center;
-width:320px;
-}
+    .wrap{ width:100%; max-width:440px; }
 
-h1{
-margin-bottom:5px;
-}
+    .card{
+      background:var(--card);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      overflow:hidden;
+      position:relative;
+    }
 
-p{
-color:#555;
-margin-bottom:20px;
-}
+    .top{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      padding: 10px 6px 12px 6px;
+    }
 
-.btn{
-display:block;
-text-decoration:none;
-margin:10px 0;
-padding:14px;
-border-radius:12px;
-font-weight:bold;
-transition:0.3s;
-}
+    .avatar img{
+width:50%;
+height:50%;
+object-fit:cover;
+border-radius:18px;
+      background:
+        radial-gradient(18px 18px at 30% 30%, rgba(255,255,255,.95), rgba(255,255,255,.2)),
+        linear-gradient(135deg, rgba(255,80,160,.85), rgba(150,120,255,.85));
+      box-shadow: 0 14px 30px rgba(0,0,0,.16);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:28px;
+      user-select:none;
+    }
 
-.google{
-background:#000;
-color:white;
-}
+    .title h1{
+      margin:0;
+      font-size:20px;
+      line-height:1.15;
+      letter-spacing:.2px;
+    }
+    .title p{
+      margin:6px 0 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.35;
+    }
 
-.wifi{
-background:#e8e8e8;
-color:black;
-}
+    .notice{
+      margin: 0 6px 10px 6px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.65);
+      color: #222;
+      font-size: 13px;
+      line-height: 1.35;
+    }
 
-.instagram{
-background:#E1306C;
-color:white;
-}
+    .pill-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      padding: 0 6px 10px 6px;
+    }
+    .pill{
+      font-size:12px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.65);
+      color:#222;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
 
-.whatsapp{
-background:#25D366;
-color:white;
-}
+    .btn{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      text-decoration:none;
+      padding:14px 14px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.72);
+      box-shadow: 0 10px 24px rgba(0,0,0,.08);
+      margin:10px 0;
+      transition: transform .12s ease, box-shadow .12s ease;
+      color:var(--text);
+      cursor:pointer;
+    }
+    .btn:hover{ transform: translateY(-1px); box-shadow: 0 14px 30px rgba(0,0,0,.12); }
+    .btn:active{ transform: translateY(0px); }
 
-.btn:hover{
-transform:scale(1.05);
-}
+    .btn .left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+    .ico{
+      width:40px; height:40px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.75);
+      flex:0 0 auto;
+    }
+    .label{
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+    }
+    .label .main{
+      font-weight:800;
+      font-size:14px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .label .sub{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .chev{
+      opacity:.7;
+      font-size:16px;
+      flex:0 0 auto;
+    }
 
-.wifi-box{
-margin-top:15px;
-font-size:14px;
-background:#f3f3f3;
-padding:10px;
-border-radius:10px;
-}
+    .primary{
+      background: linear-gradient(135deg, rgba(0,0,0,.88), rgba(30,30,30,.88));
+      color:white;
+      border-color: rgba(255,255,255,.12);
+    }
+    .primary .ico{
+      background: rgba(255,255,255,.12);
+      border-color: rgba(255,255,255,.14);
+    }
+    .primary .label .sub{ color: rgba(255,255,255,.75); }
+    .primary .chev{ opacity:.85; }
 
-</style>
+    .ig{
+      background: linear-gradient(135deg, rgba(225,48,108,.92), rgba(255,154,0,.85));
+      color:white;
+      border-color: rgba(255,255,255,.12);
+    }
+    .ig .ico{
+      background: rgba(255,255,255,.14);
+      border-color: rgba(255,255,255,.14);
+    }
+    .ig .label .sub{ color: rgba(255,255,255,.8); }
+    .ig .chev{ opacity:.9; }
 
+    .wa{
+      background: linear-gradient(135deg, rgba(37,211,102,.92), rgba(0,150,90,.88));
+      color:white;
+      border-color: rgba(255,255,255,.12);
+    }
+    .wa .ico{
+      background: rgba(255,255,255,.14);
+      border-color: rgba(255,255,255,.14);
+    }
+    .wa .label .sub{ color: rgba(255,255,255,.82); }
+    .wa .chev{ opacity:.9; }
+
+    /* ===== Wi-Fi block (organizado) ===== */
+    .wifi-card{
+      margin: 10px 0 14px 0;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.72);
+      box-shadow: 0 10px 24px rgba(0,0,0,.06);
+      padding: 14px;
+    }
+    .wifi-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 10px;
+    }
+    .wifi-head .left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .wifi-title{
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+    }
+    .wifi-title b{
+      font-size:14px;
+      letter-spacing:.2px;
+    }
+    .wifi-title span{
+      font-size:12px;
+      color: var(--muted);
+      margin-top:2px;
+    }
+    .wifi-rows{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-top: 8px;
+    }
+    .wifi-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.65);
+    }
+    .wifi-row .k{
+      font-size:12px;
+      color: var(--muted);
+      width: 72px;
+      flex: 0 0 auto;
+    }
+    .wifi-row .v{
+      font-size:13px;
+      font-weight:800;
+      text-align:right;
+      word-break: break-word;
+      flex: 1 1 auto;
+    }
+    .wifi-actions{
+      display:flex;
+      gap:10px;
+      margin-top: 10px;
+      flex-wrap:wrap;
+    }
+    .wifi-action{
+      flex:1;
+      min-width: 150px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.75);
+      cursor:pointer;
+      font-weight:800;
+      font-size: 13px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+
+    .foot{
+      margin-top:12px;
+      padding: 10px 6px 2px 6px;
+      color: var(--muted);
+      font-size: 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .tiny-btn{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.6);
+      padding:8px 10px;
+      border-radius:999px;
+      cursor:pointer;
+      font-size:12px;
+    }
+
+    /* Modal Wi-Fi */
+    .modal{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.45);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:22px;
+      z-index:50;
+    }
+    .modal.open{ display:flex; }
+    .modal-card{
+      width:100%;
+      max-width:420px;
+      background: rgba(255,255,255,.9);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:16px;
+    }
+    .modal-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .modal-top h2{
+      margin:0;
+      font-size:16px;
+    }
+    .close{
+      border:none;
+      background: rgba(0,0,0,.06);
+      border:1px solid var(--border);
+      width:40px; height:40px;
+      border-radius:14px;
+      cursor:pointer;
+      font-size:18px;
+    }
+    .wifi-box{
+      background: rgba(0,0,0,.04);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:12px;
+      margin-top:10px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .wifi-text{
+      min-width:180px;
+    }
+    .wifi-text div{
+      font-size:13px;
+      color:#222;
+      margin:4px 0;
+    }
+    .wifi-text b{ font-weight:800; }
+    .qr{
+      width:160px; height:160px;
+      background:white;
+      border-radius:16px;
+      padding:10px;
+      border:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .modal-actions{
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+      flex-wrap:wrap;
+    }
+    .action{
+      flex:1;
+      min-width:160px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:12px 12px;
+      background: rgba(255,255,255,.75);
+      cursor:pointer;
+      font-weight:800;
+    }
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
+      background: rgba(0,0,0,.82);
+      color:white;
+      padding:10px 12px;
+      border-radius:999px;
+      font-size:13px;
+      display:none;
+      z-index:60;
+      max-width:92vw;
+      text-align:center;
+    }
+    .toast.show{ display:block; }
+  </style>
 </head>
 
 <body>
-
-<div class="container">
-
-<h1>Ateliê da Beleza ✨</h1>
-<p>Bem-vinda! Aproveite nossos serviços.</p>
-
-<a class="btn google" href="https://g.page/r/CaxUk7EjJkm6/review" target="_blank">
-⭐ Avaliar no Google
-</a>
-
-<div class="wifi-box">
-📶 <b>Wi-Fi para clientes</b><br>
-Rede: <b>Ateliê da Beleza</b><br>
-Senha: <b>Da140585</b>
+  <div class="wrap">
+    <div class="card">
+      <div class="top">
+        <div class="avatar">
+<img src="logo.png" alt="Ateliê da Beleza">
 </div>
+        <div class="title">
+          <h1>Ateliê da Beleza</h1>
+          <p>Seja bem-vinda 💖<br/></p>
+        </div>
+      </div>
 
-<a class="btn instagram" href="https://www.instagram.com/ateliedabeleza7l" target="_blank">
-📸 Instagram
-</a>
+      <div class="pill-row">
+        <span class="pill">📶 Wi-Fi para clientes</span>
+               <span class="pill">📍 Sete Lagoas – MG</span>
+      </div>
 
-<a class="btn whatsapp" href="https://wa.me/5531998849364" target="_blank">
-💬 WhatsApp
-</a>
+      <div class="notice">
+        ⭐ Sua opinião é muito importante!<br>
+        Clique abaixo e deixe sua avaliação no Google.
+      </div>
 
-</div>
+      <!-- AVALIAR (abre o perfil no Maps; lá aparece o botão “Avaliar”) -->
+      <a class="btn primary" href="https://www.google.com/maps?cid=13423302099099407468" target="_blank" rel="noopener">
+        <div class="left">
+          <div class="ico">⭐</div>
+          <div class="label">
+            <div class="main">Avaliar no Google</div>
+            <div class="sub">Ao abrir, toque em “Avaliar” ⭐</div>
+          </div>
+        </div>
+        <div class="chev">›</div>
+      </a>
 
+      <!-- WIFI (organizado) -->
+      <div class="wifi-card" aria-label="Wi-Fi para clientes">
+        <div class="wifi-head">
+          <div class="left">
+            <div class="ico">📶</div>
+            <div class="wifi-title">
+              <b>Wi-Fi para clientes</b>
+              <span>Copie a senha para se conectar</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="wifi-rows">
+          <div class="wifi-row">
+            <div class="k">Rede</div>
+            <div class="v" id="ssidInline"></div>
+          </div>
+          <div class="wifi-row">
+            <div class="k">Senha</div>
+            <div class="v" id="passInline"></div>
+          </div>
+        </div>
+
+        <div class="wifi-actions">
+          <button class="wifi-action" id="btnCopyPass" type="button">🔑 Copiar senha</button>
+        </div>
+      </div>
+
+      <!-- INSTAGRAM -->
+      <a class="btn ig" href="https://www.instagram.com/ateliedabeleza7l" target="_blank" rel="noopener">
+        <div class="left">
+          <div class="ico">📸</div>
+          <div class="label">
+            <div class="main">Instagram</div>
+            <div class="sub">@ateliedabeleza7l</div>
+          </div>
+        </div>
+        <div class="chev">›</div>
+      </a>
+
+      <!-- WHATSAPP -->
+      <a class="btn wa" href="https://wa.me/5531998849364" target="_blank" rel="noopener">
+        <div class="left">
+          <div class="ico">💬</div>
+          <div class="label">
+            <div class="main">WhatsApp</div>
+            <div class="sub">(31) 99884-9364</div>
+          </div>
+        </div>
+        <div class="chev">›</div>
+      </a>
+
+      <div class="foot">
+        <span>© 2026 Nexor Digital Group. Todos os direitos reservados.</span>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL WIFI -->
+  <div class="modal" id="wifiModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-top">
+        <h2>📶 Wi-Fi para clientes</h2>
+        <button class="close" id="closeWifi" type="button" aria-label="Fechar">✕</button>
+      </div>
+
+      <div class="wifi-box">
+        <div class="wifi-text">
+          <div><b>Rede:</b> <span id="ssidText"></span></div>
+          <div><b>Senha:</b> <span id="passText"></span></div>
+          <div style="font-size:12px;color:#555;margin-top:8px;">
+            Aponte a câmera para o QR ao lado e conecte automaticamente (se o celular permitir).
+          </div>
+        </div>
+        <div class="qr" id="qrBox" title="QR do Wi-Fi"></div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="action" id="copyWifi" type="button">📋 Copiar dados do Wi-Fi</button>
+        <button class="action" id="copyPass" type="button">🔑 Copiar senha</button>
+      </div>
+
+      <div style="margin-top:10px;font-size:12px;color:#666;">
+        Formato do QR: <code id="wifiPayload" style="word-break:break-all;"></code>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Copiado!</div>
+
+  <!-- QRCode library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+  <script>
+    // ====== CONFIG ======
+    const SSID = "Ateliê da Beleza";
+    const PASS = "Da140585";
+    const AUTH = "WPA"; // se fosse rede aberta: "nopass"
+    // ====================
+
+    const wifiString = `WIFI:S:${SSID};T:${AUTH};P:${PASS};;`;
+
+    const wifiModal = document.getElementById("wifiModal");
+    const openWifi = document.getElementById("openWifi");
+    const closeWifi = document.getElementById("closeWifi");
+
+    const ssidText = document.getElementById("ssidText");
+    const passText = document.getElementById("passText");
+    const wifiPayload = document.getElementById("wifiPayload");
+    const qrBox = document.getElementById("qrBox");
+
+    const ssidInline = document.getElementById("ssidInline");
+    const passInline = document.getElementById("passInline");
+
+    const toast = document.getElementById("toast");
+
+    // preencher Wi-Fi inline
+    ssidInline.textContent = SSID;
+    passInline.textContent = PASS;
+
+    function showToast(msg){
+      toast.textContent = msg || "Copiado!";
+      toast.classList.add("show");
+      setTimeout(()=> toast.classList.remove("show"), 1700);
+    }
+
+    async function copy(text, okMsg){
+      try{
+        await navigator.clipboard.writeText(text);
+        showToast(okMsg || "Copiado!");
+      }catch(e){
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        showToast(okMsg || "Copiado!");
+      }
+    }
+
+    function openModal(){
+      ssidText.textContent = SSID;
+      passText.textContent = PASS;
+      wifiPayload.textContent = wifiString;
+
+      // render QR apenas uma vez
+      if (!qrBox.dataset.ready){
+        new QRCode(qrBox, {
+          text: wifiString,
+          width: 140,
+          height: 140,
+          correctLevel: QRCode.CorrectLevel.M
+        });
+        qrBox.dataset.ready = "1";
+      }
+
+      wifiModal.classList.add("open");
+      wifiModal.setAttribute("aria-hidden","false");
+    }
+
+    function closeModal(){
+      wifiModal.classList.remove("open");
+      wifiModal.setAttribute("aria-hidden","true");
+    }
+
+    // abrir/fechar modal
+    openWifi.addEventListener("click", openModal);
+    closeWifi.addEventListener("click", closeModal);
+
+    // fecha clicando fora
+    wifiModal.addEventListener("click", (e)=>{
+      if(e.target === wifiModal) closeModal();
+    });
+
+    // botões do modal
+    document.getElementById("copyWifi").addEventListener("click", ()=>{
+      copy(`Wi-Fi: ${SSID}\nSenha: ${PASS}`, "Dados do Wi-Fi copiados!");
+    });
+    document.getElementById("copyPass").addEventListener("click", ()=>{
+      copy(PASS, "Senha copiada!");
+    });
+
+    // botões do bloco Wi-Fi (inline)
+    document.getElementById("btnCopyPass").addEventListener("click", ()=>{
+      copy(PASS, "Senha copiada!");
+    });
+    document.getElementById("btnCopyWifi").addEventListener("click", ()=>{
+      copy(`Wi-Fi: ${SSID}\nSenha: ${PASS}`, "Dados do Wi-Fi copiados!");
+    });
+
+    // copiar link do site (quando estiver publicado)
+    document.getElementById("copyPage").addEventListener("click", ()=>{
+      copy(window.location.href, "Link da página copiado!");
+    });
+  </script>
 </body>
 </html>
