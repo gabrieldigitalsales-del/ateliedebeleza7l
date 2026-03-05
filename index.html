@@ -54,7 +54,7 @@
       padding: 10px 6px 12px 6px;
     }
 
-    /* LOGO (container + img) */
+    /* LOGO */
     .avatar{
       width:62px;
       height:62px;
@@ -180,6 +180,7 @@
       opacity:.7;
       font-size:16px;
       flex:0 0 auto;
+      transition: transform .18s ease;
     }
 
     .primary{
@@ -218,7 +219,7 @@
     .wa .label .sub{ color: rgba(255,255,255,.82); }
     .wa .chev{ opacity:.9; }
 
-    /* Wi-Fi block */
+    /* ===== Wi-Fi (fechado/aberto com animação) ===== */
     .wifi-card{
       margin: 10px 0 14px 0;
       border-radius: 18px;
@@ -226,13 +227,14 @@
       background: rgba(255,255,255,.72);
       box-shadow: 0 10px 24px rgba(0,0,0,.06);
       padding: 14px;
+      cursor:pointer;
+      user-select:none;
     }
     .wifi-head{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      margin-bottom: 10px;
     }
     .wifi-head .left{
       display:flex;
@@ -254,11 +256,29 @@
       color: var(--muted);
       margin-top:2px;
     }
+
+    /* conteúdo escondido */
+    .wifi-body{
+      overflow:hidden;
+      max-height:0;
+      opacity:0;
+      transform: translateY(-6px);
+      transition: max-height .28s ease, opacity .22s ease, transform .22s ease;
+    }
+    .wifi-card.open .wifi-body{
+      max-height:260px; /* suficiente pro conteúdo */
+      opacity:1;
+      transform: translateY(0);
+      margin-top:10px;
+    }
+    .wifi-card.open .chev{
+      transform: rotate(90deg);
+    }
+
     .wifi-rows{
       display:flex;
       flex-direction:column;
       gap:8px;
-      margin-top: 8px;
     }
     .wifi-row{
       display:flex;
@@ -283,6 +303,7 @@
       word-break: break-word;
       flex: 1 1 auto;
     }
+
     .wifi-actions{
       display:flex;
       gap:10px;
@@ -308,7 +329,6 @@
     .wifi-action:hover{ transform: translateY(-1px); box-shadow: 0 10px 22px rgba(0,0,0,.10); }
     .wifi-action:active{ transform: translateY(0px); }
 
-    /* estado "copiado" do botão */
     .wifi-action.copied{
       background: rgba(37,211,102,.18);
       border-color: rgba(37,211,102,.35);
@@ -382,31 +402,35 @@
         <div class="chev">›</div>
       </a>
 
-      <!-- WIFI (organizado) -->
-      <div class="wifi-card" aria-label="Wi-Fi para clientes">
+      <!-- WIFI (clicável e fechado) -->
+      <div class="wifi-card" id="wifiCard" aria-label="Wi-Fi para clientes">
         <div class="wifi-head">
           <div class="left">
             <div class="ico">📶</div>
             <div class="wifi-title">
               <b>Wi-Fi para clientes</b>
-              <span>Copie a senha para se conectar</span>
+              <span>Toque para ver rede e senha</span>
             </div>
           </div>
+          <div class="chev">›</div>
         </div>
 
-        <div class="wifi-rows">
-          <div class="wifi-row">
-            <div class="k">Rede</div>
-            <div class="v" id="ssidInline"></div>
+        <!-- Conteúdo escondido (abre com animação) -->
+        <div class="wifi-body" id="wifiBody">
+          <div class="wifi-rows">
+            <div class="wifi-row">
+              <div class="k">Rede</div>
+              <div class="v" id="ssidInline"></div>
+            </div>
+            <div class="wifi-row">
+              <div class="k">Senha</div>
+              <div class="v" id="passInline"></div>
+            </div>
           </div>
-          <div class="wifi-row">
-            <div class="k">Senha</div>
-            <div class="v" id="passInline"></div>
-          </div>
-        </div>
 
-        <div class="wifi-actions">
-          <button class="wifi-action" id="btnCopyPass" type="button">🔑 Copiar senha</button>
+          <div class="wifi-actions">
+            <button class="wifi-action" id="btnCopyPass" type="button">🔑 Copiar senha</button>
+          </div>
         </div>
       </div>
 
@@ -448,14 +472,22 @@
     const PASS = "Da140585";
     // ====================
 
+    const wifiCard = document.getElementById("wifiCard");
+    const toast = document.getElementById("toast");
+
     const ssidInline = document.getElementById("ssidInline");
     const passInline = document.getElementById("passInline");
-    const toast = document.getElementById("toast");
+
     const btnCopyPass = document.getElementById("btnCopyPass");
 
-    // preencher Wi-Fi inline
-    ssidInline.textContent = SSID;
-    passInline.textContent = PASS;
+    // Só preenche quando abrir pela primeira vez (para não “mostrar” antes)
+    let wifiFilled = false;
+    function fillWifi(){
+      if(wifiFilled) return;
+      ssidInline.textContent = SSID;
+      passInline.textContent = PASS;
+      wifiFilled = true;
+    }
 
     function showToast(msg){
       toast.textContent = msg || "Copiado!";
@@ -468,7 +500,7 @@
         await navigator.clipboard.writeText(text);
         showToast(okMsg || "Copiado!");
       }catch(e){
-        // fallback para quando não tem permissão/https (ex: arquivo local)
+        // fallback (arquivo local/sem https)
         const ta = document.createElement("textarea");
         ta.value = text;
         document.body.appendChild(ta);
@@ -484,17 +516,27 @@
       button.textContent = copiedLabel;
       button.classList.add("copied");
       button.disabled = true;
-      button.style.opacity = "0.95";
 
       setTimeout(()=>{
         button.textContent = originalLabel;
         button.classList.remove("copied");
         button.disabled = false;
-        button.style.opacity = "";
       }, ms);
     }
 
-    // ✅ Botão copiar senha + “✅ Copiado”
+    // Abrir/fechar Wi-Fi (clique no bloco)
+    wifiCard.addEventListener("click", (e)=>{
+      // Se clicar no botão, não alterna o card (evita fechar na hora de copiar)
+      if(e.target && (e.target.id === "btnCopyPass" || e.target.closest("#btnCopyPass"))){
+        return;
+      }
+      wifiCard.classList.toggle("open");
+      if(wifiCard.classList.contains("open")){
+        fillWifi();
+      }
+    });
+
+    // Botão copiar senha
     btnCopyPass.addEventListener("click", ()=>{
       copy(PASS, "Senha copiada!");
       setCopiedButtonState(btnCopyPass, "✅ Copiado", 2000);
