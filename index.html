@@ -54,7 +54,7 @@
       padding: 10px 6px 12px 6px;
     }
 
-    /* ✅ LOGO (corrigido) */
+    /* LOGO (container + img) */
     .avatar{
       width:62px;
       height:62px;
@@ -72,7 +72,7 @@
     .avatar img{
       width:100%;
       height:100%;
-      object-fit:cover;  /* se sua logo tiver fundo, vai preencher; se for PNG transparente, fica lindo */
+      object-fit:cover;
       border-radius:18px;
       display:block;
     }
@@ -218,7 +218,7 @@
     .wa .label .sub{ color: rgba(255,255,255,.82); }
     .wa .chev{ opacity:.9; }
 
-    /* ===== Wi-Fi block (organizado) ===== */
+    /* Wi-Fi block */
     .wifi-card{
       margin: 10px 0 14px 0;
       border-radius: 18px;
@@ -303,6 +303,15 @@
       align-items:center;
       justify-content:center;
       gap:8px;
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .wifi-action:hover{ transform: translateY(-1px); box-shadow: 0 10px 22px rgba(0,0,0,.10); }
+    .wifi-action:active{ transform: translateY(0px); }
+
+    /* estado "copiado" do botão */
+    .wifi-action.copied{
+      background: rgba(37,211,102,.18);
+      border-color: rgba(37,211,102,.35);
     }
 
     .foot{
@@ -442,6 +451,7 @@
     const ssidInline = document.getElementById("ssidInline");
     const passInline = document.getElementById("passInline");
     const toast = document.getElementById("toast");
+    const btnCopyPass = document.getElementById("btnCopyPass");
 
     // preencher Wi-Fi inline
     ssidInline.textContent = SSID;
@@ -469,13 +479,26 @@
       }
     }
 
-    // Botão copiar senha (✅ corrigido)
-    const btnCopyPass = document.getElementById("btnCopyPass");
-    if(btnCopyPass){
-      btnCopyPass.addEventListener("click", ()=>{
-        copy(PASS, "Senha copiada!");
-      });
+    function setCopiedButtonState(button, copiedLabel, ms){
+      const originalLabel = button.textContent;
+      button.textContent = copiedLabel;
+      button.classList.add("copied");
+      button.disabled = true;
+      button.style.opacity = "0.95";
+
+      setTimeout(()=>{
+        button.textContent = originalLabel;
+        button.classList.remove("copied");
+        button.disabled = false;
+        button.style.opacity = "";
+      }, ms);
     }
+
+    // ✅ Botão copiar senha + “✅ Copiado”
+    btnCopyPass.addEventListener("click", ()=>{
+      copy(PASS, "Senha copiada!");
+      setCopiedButtonState(btnCopyPass, "✅ Copiado", 2000);
+    });
   </script>
 </body>
 </html>
