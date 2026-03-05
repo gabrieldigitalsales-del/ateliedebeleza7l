@@ -54,11 +54,11 @@
       padding: 10px 6px 12px 6px;
     }
 
-    .avatar img{
-width:50%;
-height:50%;
-object-fit:cover;
-border-radius:18px;
+    /* ✅ LOGO (corrigido) */
+    .avatar{
+      width:62px;
+      height:62px;
+      border-radius:18px;
       background:
         radial-gradient(18px 18px at 30% 30%, rgba(255,255,255,.95), rgba(255,255,255,.2)),
         linear-gradient(135deg, rgba(255,80,160,.85), rgba(150,120,255,.85));
@@ -66,8 +66,15 @@ border-radius:18px;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:28px;
-      user-select:none;
+      overflow:hidden;
+      flex: 0 0 auto;
+    }
+    .avatar img{
+      width:100%;
+      height:100%;
+      object-fit:cover;  /* se sua logo tiver fundo, vai preencher; se for PNG transparente, fica lindo */
+      border-radius:18px;
+      display:block;
     }
 
     .title h1{
@@ -309,103 +316,8 @@ border-radius:18px;
       gap:10px;
       flex-wrap:wrap;
     }
-    .tiny-btn{
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.6);
-      padding:8px 10px;
-      border-radius:999px;
-      cursor:pointer;
-      font-size:12px;
-    }
 
-    /* Modal Wi-Fi */
-    .modal{
-      position:fixed;
-      inset:0;
-      background: rgba(0,0,0,.45);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:22px;
-      z-index:50;
-    }
-    .modal.open{ display:flex; }
-    .modal-card{
-      width:100%;
-      max-width:420px;
-      background: rgba(255,255,255,.9);
-      border:1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding:16px;
-    }
-    .modal-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:10px;
-    }
-    .modal-top h2{
-      margin:0;
-      font-size:16px;
-    }
-    .close{
-      border:none;
-      background: rgba(0,0,0,.06);
-      border:1px solid var(--border);
-      width:40px; height:40px;
-      border-radius:14px;
-      cursor:pointer;
-      font-size:18px;
-    }
-    .wifi-box{
-      background: rgba(0,0,0,.04);
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:12px;
-      margin-top:10px;
-      display:flex;
-      gap:12px;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
-    }
-    .wifi-text{
-      min-width:180px;
-    }
-    .wifi-text div{
-      font-size:13px;
-      color:#222;
-      margin:4px 0;
-    }
-    .wifi-text b{ font-weight:800; }
-    .qr{
-      width:160px; height:160px;
-      background:white;
-      border-radius:16px;
-      padding:10px;
-      border:1px solid var(--border);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .modal-actions{
-      display:flex;
-      gap:10px;
-      margin-top:12px;
-      flex-wrap:wrap;
-    }
-    .action{
-      flex:1;
-      min-width:160px;
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:12px 12px;
-      background: rgba(255,255,255,.75);
-      cursor:pointer;
-      font-weight:800;
-    }
+    /* Toast */
     .toast{
       position:fixed;
       left:50%;
@@ -420,6 +332,7 @@ border-radius:18px;
       z-index:60;
       max-width:92vw;
       text-align:center;
+      box-shadow: 0 10px 24px rgba(0,0,0,.18);
     }
     .toast.show{ display:block; }
   </style>
@@ -430,8 +343,8 @@ border-radius:18px;
     <div class="card">
       <div class="top">
         <div class="avatar">
-<img src="logo.png" alt="Ateliê da Beleza">
-</div>
+          <img src="logo.png" alt="Ateliê da Beleza">
+        </div>
         <div class="title">
           <h1>Ateliê da Beleza</h1>
           <p>Seja bem-vinda 💖<br/></p>
@@ -440,7 +353,7 @@ border-radius:18px;
 
       <div class="pill-row">
         <span class="pill">📶 Wi-Fi para clientes</span>
-               <span class="pill">📍 Sete Lagoas – MG</span>
+        <span class="pill">📍 Sete Lagoas – MG</span>
       </div>
 
       <div class="notice">
@@ -448,7 +361,7 @@ border-radius:18px;
         Clique abaixo e deixe sua avaliação no Google.
       </div>
 
-      <!-- AVALIAR (abre o perfil no Maps; lá aparece o botão “Avaliar”) -->
+      <!-- AVALIAR -->
       <a class="btn primary" href="https://www.google.com/maps?cid=13423302099099407468" target="_blank" rel="noopener">
         <div class="left">
           <div class="ico">⭐</div>
@@ -514,67 +427,20 @@ border-radius:18px;
 
       <div class="foot">
         <span>© 2026 Nexor Digital Group. Todos os direitos reservados.</span>
-        
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL WIFI -->
-  <div class="modal" id="wifiModal" aria-hidden="true">
-    <div class="modal-card">
-      <div class="modal-top">
-        <h2>📶 Wi-Fi para clientes</h2>
-        <button class="close" id="closeWifi" type="button" aria-label="Fechar">✕</button>
-      </div>
-
-      <div class="wifi-box">
-        <div class="wifi-text">
-          <div><b>Rede:</b> <span id="ssidText"></span></div>
-          <div><b>Senha:</b> <span id="passText"></span></div>
-          <div style="font-size:12px;color:#555;margin-top:8px;">
-            Aponte a câmera para o QR ao lado e conecte automaticamente (se o celular permitir).
-          </div>
-        </div>
-        <div class="qr" id="qrBox" title="QR do Wi-Fi"></div>
-      </div>
-
-      <div class="modal-actions">
-        <button class="action" id="copyWifi" type="button">📋 Copiar dados do Wi-Fi</button>
-        <button class="action" id="copyPass" type="button">🔑 Copiar senha</button>
-      </div>
-
-      <div style="margin-top:10px;font-size:12px;color:#666;">
-        Formato do QR: <code id="wifiPayload" style="word-break:break-all;"></code>
       </div>
     </div>
   </div>
 
   <div class="toast" id="toast">Copiado!</div>
 
-  <!-- QRCode library -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-
   <script>
     // ====== CONFIG ======
     const SSID = "Ateliê da Beleza";
     const PASS = "Da140585";
-    const AUTH = "WPA"; // se fosse rede aberta: "nopass"
     // ====================
-
-    const wifiString = `WIFI:S:${SSID};T:${AUTH};P:${PASS};;`;
-
-    const wifiModal = document.getElementById("wifiModal");
-    const openWifi = document.getElementById("openWifi");
-    const closeWifi = document.getElementById("closeWifi");
-
-    const ssidText = document.getElementById("ssidText");
-    const passText = document.getElementById("passText");
-    const wifiPayload = document.getElementById("wifiPayload");
-    const qrBox = document.getElementById("qrBox");
 
     const ssidInline = document.getElementById("ssidInline");
     const passInline = document.getElementById("passInline");
-
     const toast = document.getElementById("toast");
 
     // preencher Wi-Fi inline
@@ -584,7 +450,7 @@ border-radius:18px;
     function showToast(msg){
       toast.textContent = msg || "Copiado!";
       toast.classList.add("show");
-      setTimeout(()=> toast.classList.remove("show"), 1700);
+      setTimeout(()=> toast.classList.remove("show"), 2000);
     }
 
     async function copy(text, okMsg){
@@ -592,6 +458,7 @@ border-radius:18px;
         await navigator.clipboard.writeText(text);
         showToast(okMsg || "Copiado!");
       }catch(e){
+        // fallback para quando não tem permissão/https (ex: arquivo local)
         const ta = document.createElement("textarea");
         ta.value = text;
         document.body.appendChild(ta);
@@ -602,60 +469,13 @@ border-radius:18px;
       }
     }
 
-    function openModal(){
-      ssidText.textContent = SSID;
-      passText.textContent = PASS;
-      wifiPayload.textContent = wifiString;
-
-      // render QR apenas uma vez
-      if (!qrBox.dataset.ready){
-        new QRCode(qrBox, {
-          text: wifiString,
-          width: 140,
-          height: 140,
-          correctLevel: QRCode.CorrectLevel.M
-        });
-        qrBox.dataset.ready = "1";
-      }
-
-      wifiModal.classList.add("open");
-      wifiModal.setAttribute("aria-hidden","false");
+    // Botão copiar senha (✅ corrigido)
+    const btnCopyPass = document.getElementById("btnCopyPass");
+    if(btnCopyPass){
+      btnCopyPass.addEventListener("click", ()=>{
+        copy(PASS, "Senha copiada!");
+      });
     }
-
-    function closeModal(){
-      wifiModal.classList.remove("open");
-      wifiModal.setAttribute("aria-hidden","true");
-    }
-
-    // abrir/fechar modal
-    openWifi.addEventListener("click", openModal);
-    closeWifi.addEventListener("click", closeModal);
-
-    // fecha clicando fora
-    wifiModal.addEventListener("click", (e)=>{
-      if(e.target === wifiModal) closeModal();
-    });
-
-    // botões do modal
-    document.getElementById("copyWifi").addEventListener("click", ()=>{
-      copy(`Wi-Fi: ${SSID}\nSenha: ${PASS}`, "Dados do Wi-Fi copiados!");
-    });
-    document.getElementById("copyPass").addEventListener("click", ()=>{
-      copy(PASS, "Senha copiada!");
-    });
-
-    // botões do bloco Wi-Fi (inline)
-    document.getElementById("btnCopyPass").addEventListener("click", ()=>{
-      copy(PASS, "Senha copiada!");
-    });
-    document.getElementById("btnCopyWifi").addEventListener("click", ()=>{
-      copy(`Wi-Fi: ${SSID}\nSenha: ${PASS}`, "Dados do Wi-Fi copiados!");
-    });
-
-    // copiar link do site (quando estiver publicado)
-    document.getElementById("copyPage").addEventListener("click", ()=>{
-      copy(window.location.href, "Link da página copiado!");
-    });
   </script>
 </body>
 </html>
